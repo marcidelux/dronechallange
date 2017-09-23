@@ -43,11 +43,11 @@ class InstructionModel : ItemViewModel<Instruction>() {
     val time: Property<Number> = bind { item?.timeProperty() }
 }
 
-//val sausageCommunicator = object : SausageCommunicator("COM4") {
-//    override fun onMessageReceived(command: String) {
-//        println("returned command: $command")
-//    }
-//}
+val sausageCommunicator = object : ArduinoCommunicator("COM4") {
+    override fun onMessageReceived(command: String) {
+        println("returned command: $command")
+    }
+}
 
 class DroneTableView : View() {
     val model: InstructionModel by inject()
