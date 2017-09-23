@@ -77,16 +77,16 @@ class DroneTableView : View() {
                     form {
                         fieldset("Instruction") {
                             field("Channel 1") {
-                                textfield(model.channel1).required()
+                                textfield(model.channel1)
                             }
                             field("Channel 2") {
-                                textfield(model.channel2).required()
+                                textfield(model.channel2)
                             }
                             field("Channel 3") {
-                                textfield(model.channel3).required()
+                                textfield(model.channel3)
                             }
                             field("Channel 4") {
-                                textfield(model.channel4).required()
+                                textfield(model.channel4)
                             }
                             field("Time") {
                                 textfield(model.time).required()
