@@ -108,14 +108,14 @@ class DroneTableView : View() {
                     button ("Step") {
                         action {
                             val instruction = tableContent[currentPosition]
-//                            sausageCommunicator.sendString(instruction.toString())
+                            sausageCommunicator.sendString(instruction.toString())
                             currentPosition++
                         }
                     }
                     button ("Run") {
                         action {
                             val message = tableContent.subList(currentPosition, tableContent.size).joinToString("|")
-//                            sausageCommunicator.sendString(message)
+                            sausageCommunicator.sendString(message)
                             currentPosition = tableContent.size
                         }
                     }
