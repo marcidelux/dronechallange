@@ -189,16 +189,17 @@ void loop(){
   // read input to inputs[..]
   if(Serial.available() > 0){
     if(Serial.available()){
-      String input = Serial.readStringUntil('\n');
-      int channel = input[0] - '0';
+      String input = Serial.readStringUntil('.');
+      int channel = (input[0] - '0')-1;
       int in = 0;
 
       for(int i = 2; i <= 5; i++){
           in = (in*10) + (input[i]-'0');
-          Serial.println(in);
         }
 
-      if(channel <= chanel_number)
+      if(channel <
+      
+      chanel_number)
       {
         inputs[channel] = in;
       }
