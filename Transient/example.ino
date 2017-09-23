@@ -104,6 +104,7 @@ void loop(){
   //put main code here
   static int val = 1;
   int in = 0;
+  /*
   if(count == 1)
   {
     inputs[1] = 1300;
@@ -182,24 +183,26 @@ void loop(){
 
   if(enable){
     count++;
-  }
-
+ }
+ */
 
   // read input to inputs[..]
   if(Serial.available() > 0){
     if(Serial.available()){
-      String input = Serial.readStringUntil('\n');
-      in = 0;
+      String input = Serial.readStringUntil('.');
+      int channel = (input[0] - '0')-1;
+      int in = 0;
 
-      for(int i = 0; i < input.length(); i++){
+      for(int i = 2; i <= 5; i++){
           in = (in*10) + (input[i]-'0');
-
-          if(in = 1){
-            count = 0;
-            enable = true;
-            }
-  
         }
+
+      if(channel <
+      
+      chanel_number)
+      {
+        inputs[channel] = in;
+      }
 
       
       }
