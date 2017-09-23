@@ -10,6 +10,18 @@
 #define sigPin 3   //set PPM signal output pin on the arduino
 //////////////////////////////////////////////////////////////////
 
+//DC3k
+#define PARSE_CHAR ','
+
+//String msg;
+char msg;
+
+int value1;
+int value2;
+int value3;
+
+long prev_count = 0;
+long curr_count = 0;
 
 /*this array holds the servo values for the ppm signal
  change theese values in your code (usually servo values move between 1000 and 2000)*/
@@ -75,7 +87,10 @@ void smooth(int inputs[], int ppm[], int steep = 1){
 
 
 
-void setup(){  
+void setup(){
+
+  //Serial.begin(9600);
+    
   //initiallize default ppm values
   for(int i=0; i<chanel_number; i++){
     ppm[i]= default_servo_value;
@@ -84,7 +99,7 @@ void setup(){
 
 
   
-  Serial.begin(115200);
+  Serial.begin(9600);
 
   pinMode(sigPin, OUTPUT);
   digitalWrite(sigPin, !onState);  //set the PPM signal pin to the default state (off)
@@ -101,10 +116,10 @@ void setup(){
 }
 
 void loop(){
+  /*
   //put main code here
   static int val = 1;
   int in = 0;
-  /*
   if(count == 1)
   {
     inputs[1] = 1300;
@@ -183,40 +198,72 @@ void loop(){
 
   if(enable){
     count++;
- }
- */
+  }
+
 
   // read input to inputs[..]
   if(Serial.available() > 0){
     if(Serial.available()){
-      String input = Serial.readStringUntil('.');
-      int channel = (input[0] - '0')-1;
-      int in = 0;
+      String input = Serial.readStringUntil('\n');
+      in = 0;
 
-      for(int i = 2; i <= 5; i++){
+      for(int i = 0; i < input.length(); i++){
           in = (in*10) + (input[i]-'0');
-        }
 
-      if(channel <
-      
-      chanel_number)
-      {
-        inputs[channel] = in;
-      }
+          if(in = 1){
+            count = 0;
+            enable = true;
+            }
+  
+        }
 
       
       }
     
   }
+  */
+
+  inputs[0] = 1520;
+  inputs[1] = 1520;
+  if(Serial.available()) {
+    /*
+    msg = Serial.readString();
+
+    value1 = getValue(msg, PARSE_CHAR, 0).toInt();
+    value2 = getValue(msg, PARSE_CHAR, 1).toInt();
+    value3 = getValue(msg, PARSE_CHAR, 2).toInt();
+
+    Serial.println("id: " + String(value1));
+    Serial.println("forward movement: " + String(value2));
+    Serial.println("rotation: " + String(value3));
+    */
+
+    msg = Serial.read();
+
+    if(msg == 'w'){
+      inputs[1] = 1300;
+    }
+    else if(msg == 's'){
+      inputs[1] = 1700;
+    }
+    else if(msg == 'a'){
+      inputs[0] = 1300;
+    }
+    else if(msg == 'd'){
+      inputs[0] = 1700;
+    }
+  }
+
+  
 
   //call it on every iteration
-  smooth(inputs, ppm, 1); 
+  smooth(inputs, ppm, 3); //param 1 - /mekkora legyen a smooth-olás meredeksége
   
   Serial.print(ppm[0]);
   Serial.print('\t');
   Serial.println(ppm[1]);
+  
   delay(20);
-
 }
 
 ISR(TIMER1_COMPA_vect){  //leave this alone
