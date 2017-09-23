@@ -2,6 +2,7 @@ package szoftverhurkak
 
 import javafx.beans.property.Property
 import javafx.collections.FXCollections
+import javafx.geometry.Pos
 import javafx.scene.layout.GridPane
 import tornadofx.*
 
@@ -43,11 +44,11 @@ class InstructionModel : ItemViewModel<Instruction>() {
     val time: Property<Number> = bind { item?.timeProperty() }
 }
 
-//val sausageCommunicator = object : SausageCommunicator("COM4") {
-//    override fun onMessageReceived(command: String) {
-//        println("returned command: $command")
-//    }
-//}
+val sausageCommunicator = object : ArduinoCommunicator("COM4") {
+    override fun onMessageReceived(command: String) {
+        println("returned command: $command")
+    }
+}
 
 class DroneTableView : View() {
     val model: InstructionModel by inject()
@@ -68,7 +69,7 @@ class DroneTableView : View() {
                         column("Time (ms)", Instruction::timeProperty)
 
                         onSelectionChange {
-                            colorpicker {  }
+                            colorpicker { }
                         }
                     }
                 }
@@ -92,6 +93,7 @@ class DroneTableView : View() {
                             }
                         }
                         button {
+                            alignment = Pos.CENTER
                             text = "Add Instruction"
                             action {
                                 model.commit {
@@ -105,18 +107,27 @@ class DroneTableView : View() {
                             }
                         }
                     }
-                    button ("Step") {
-                        action {
-                            val instruction = tableContent[currentPosition]
-//                            sausageCommunicator.sendString(instruction.toString())
-                            currentPosition++
+
+                    hbox {
+                        alignment = Pos.CENTER
+                        button("Step") {
+                            action {
+                                val instruction = tableContent[currentPosition]
+                                sausageCommunicator.sendString(instruction.toString())
+                                currentPosition++
+                            }
                         }
-                    }
-                    button ("Run") {
-                        action {
-                            val message = tableContent.subList(currentPosition, tableContent.size).joinToString("|")
-//                            sausageCommunicator.sendString(message)
-                            currentPosition = tableContent.size
+                        button("Run") {
+                            action {
+                                val message = tableContent.subList(currentPosition, tableContent.size).joinToString("|")
+                                sausageCommunicator.sendString(message)
+                                currentPosition = tableContent.size
+                            }
+                        }
+                        button("Clear") {
+                            action {
+                                tableContent.clear()
+                            }
                         }
                     }
                 }
