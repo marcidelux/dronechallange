@@ -44,7 +44,7 @@ class InstructionModel : ItemViewModel<Instruction>() {
     val time: Property<Number> = bind { item?.timeProperty() }
 }
 
-val sausageCommunicator = object : ArduinoCommunicator("COM4") {
+val arduinoCommunicator = object : ArduinoCommunicator("COM4") {
     override fun onMessageReceived(command: String) {
         println("returned command: $command")
     }
@@ -113,14 +113,14 @@ class DroneTableView : View() {
                         button("Step") {
                             action {
                                 val instruction = tableContent[currentPosition]
-                                sausageCommunicator.sendString(instruction.toString())
+                                arduinoCommunicator.sendString(instruction.toString())
                                 currentPosition++
                             }
                         }
                         button("Run") {
                             action {
                                 val message = tableContent.subList(currentPosition, tableContent.size).joinToString("|")
-                                sausageCommunicator.sendString(message)
+                                arduinoCommunicator.sendString(message)
                                 currentPosition = tableContent.size
                             }
                         }
